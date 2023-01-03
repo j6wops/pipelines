@@ -15,5 +15,12 @@ pipeline {
                 }
             }
         }
+        stage('Verification') {
+            steps {
+                script {
+                    sh encoding: 'UTF-8', label: 'View Files', script: 'pwd && ls -lah'
+                }
+            }
+        }
     }
 }
