@@ -22,5 +22,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh encoding: 'UTF-8', label: 'Build demo image', script: 'cd demo && docker build . -t j6wdev/demo:test --no-cache'
+                    sh encoding: 'UTF-8', label: 'Push demo image', script: 'docker push j6wdev/demo:test --no-cache'
+                }
+            }
+        }
     }
 }
