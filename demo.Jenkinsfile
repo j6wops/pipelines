@@ -31,5 +31,17 @@ pipeline {
                 }
             }
         }
+
+stage('Deploy') {
+            steps {
+                withCredentials([string(credentialsId: 'DEPLOY_TOKEN', variable: 'JTLS'), usernamePassword(credentialsId: 'DOCKER', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                    sh label: 'Docker login', script: 'docker $JTLS login -u "$DOCKER_USER" -p "$DOCKER_PASS"'
+                    sh label: 'Image Pull', script: 'docker $JTLS pull j6wdev/demo:test'
+                    sh label: 'Deploy Image', script: 'docker $JTLS service update --force --update-parallelism 1 --update-delay 10s demo
+                    sh label: 'Get Containers', script: 'docker $JTLS ps | grep demo'
+                }
+            }
+        }
+
     }
 }
